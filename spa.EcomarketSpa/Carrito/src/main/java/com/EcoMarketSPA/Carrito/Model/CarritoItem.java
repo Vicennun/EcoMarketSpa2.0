@@ -1,11 +1,7 @@
 package com.EcoMarketSPA.Carrito.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,18 +12,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CarritoItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(name = "producto_id", nullable = false)
     private Integer productoId;
 
-    @Column(nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
-    @Column(nullable = false)
+    @Column(name = "precio_unitario", nullable = false)
     private Double precioUnitario;
+
+    // Relación muchos a 1 con Carrito
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "carrito_id", nullable = false)
+    private Carrito carrito;
 
     // Subtotal calculado dinámicamente
     public Double getSubtotal() {
